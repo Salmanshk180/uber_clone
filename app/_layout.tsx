@@ -2,6 +2,7 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
+import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 import "react-native-reanimated";
 SplashScreen.preventAutoHideAsync();
 
@@ -25,12 +26,29 @@ export default function RootLayout() {
   if (!loaded) {
     return null;
   }
+  const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
+
+  if (!publishableKey) {
+    throw new Error(
+      "Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env"
+    );
+  }
 
   return (
-    <Stack screenOptions={{ headerShown: false,statusBarStyle:"dark" }} >
-      <Stack.Screen name="index" />
-      <Stack.Screen name="(root)/(tabs)/home" />
-      <Stack.Screen name="+not-found" />
-    </Stack>
+    <ClerkProvider publishableKey={publishableKey}>
+      <ClerkLoaded>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            statusBarStyle: "dark",
+            statusBarTranslucent: true,
+          }}
+        >
+          <Stack.Screen name="index" />
+          <Stack.Screen name="(root)/(tabs)/home" />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+      </ClerkLoaded>
+    </ClerkProvider>
   );
 }

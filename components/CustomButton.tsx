@@ -6,6 +6,7 @@ interface CustomButtonProps {
   classNames: string;
   IconLeft?: React.ReactNode;
   IconRight?: React.ReactNode;
+  textClassName?:string;
   onPress: () => void;
 }
 
@@ -15,6 +16,7 @@ const CustomButton = ({
   IconLeft,
   IconRight,
   classNames,
+  textClassName
 }: CustomButtonProps) => {
   return (
     <TouchableOpacity
@@ -22,7 +24,7 @@ const CustomButton = ({
       className={`flex flex-row justify-center items-center shadow-md shadow-neutral-400/70 ${classNames}`}
     >
       {IconLeft && IconLeft}
-      <Text className="text-white text-[17px]">{text}</Text>
+      <Text className={`text-white font-bold text-[17px] ${textClassName}`}>{text}</Text>
       {IconRight && IconRight}
     </TouchableOpacity>
   );
