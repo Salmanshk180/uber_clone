@@ -1,4 +1,12 @@
-import { View, Text, ScrollView, Image, Alert, KeyboardAvoidingView, Platform } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import React, { useState } from "react";
 import { icons, images } from "@/constants";
 import InputField from "@/components/InputField";
@@ -7,6 +15,7 @@ import { Link, router } from "expo-router";
 import OAuth from "@/components/OAuth";
 import { useSignUp } from "@clerk/clerk-expo";
 import Modal from "react-native-modal";
+import { fetchAPI } from "@/lib/fetch";
 
 const SignUp = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -53,6 +62,14 @@ const SignUp = () => {
       });
 
       if (completeSignUp.status === "complete") {
+        await fetch("/user", {
+          method: "POST",
+          body: JSON.stringify({
+            name: form.name,
+            email: form.email,
+            clerkId: completeSignUp.createdUserId,
+          }),
+        });
         await setActive({ session: completeSignUp.createdSessionId });
         setVerification({ ...verification, status: "success", error: "" });
       } else {
@@ -75,8 +92,8 @@ const SignUp = () => {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{ flex: 1,backgroundColor:"white" }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1, backgroundColor: "white" }}
     >
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View className="relative">
@@ -143,7 +160,9 @@ const SignUp = () => {
                 value={verification.code}
                 keyboardType="numeric"
                 label="Code"
-                onChangeText={(code) => setVerification({ ...verification, code })}
+                onChangeText={(code) =>
+                  setVerification({ ...verification, code })
+                }
               />
               {verification.error && (
                 <Text className="text-red-500 text-sm mt-16">
