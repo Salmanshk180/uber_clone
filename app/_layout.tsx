@@ -4,6 +4,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 import "react-native-reanimated";
+import { tokenCache } from "@/lib/auth";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -35,7 +36,7 @@ export default function RootLayout() {
   }
 
   return (
-    <ClerkProvider publishableKey={publishableKey}>
+    <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
       <ClerkLoaded>
         <Stack
           screenOptions={{
