@@ -14,7 +14,7 @@ export default function RootLayout() {
     "Jakarta-Medium": require("../assets/fonts/PlusJakartaSans-Medium.ttf"),
     "Jakarta-Regular": require("../assets/fonts/PlusJakartaSans-Regular.ttf"),
     "Jakarta-SemiBold": require("../assets/fonts/PlusJakartaSans-SemiBold.ttf"),
-});
+  });
 
   useEffect(() => {
     if (loaded) {
@@ -27,9 +27,9 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="(root)" options={{ headerShown: false }} />
+    <Stack screenOptions={{ headerShown: false,statusBarStyle:"dark" }} >
+      <Stack.Screen name="index" />
+      <Stack.Screen name="(root)/(tabs)/home" />
       <Stack.Screen name="+not-found" />
     </Stack>
   );
