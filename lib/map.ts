@@ -95,23 +95,24 @@ export const calculateDriverTimes = async ({
 
   try {
     const timesPromises = markers.map(async (marker) => {
-      // const responseToUser = await fetch(
-      //   `https://maps.googleapis.com/maps/api/directions/json?origin=${marker.latitude},${marker.longitude}&destination=${userLatitude},${userLongitude}&key=${directionsAPI}`
-      // );
-      // const dataToUser = await responseToUser.json();
-      // const timeToUser = dataToUser.routes[0]?.legs[0].duration.value; // Time in seconds
+      const responseToUser = await fetch(
+        `https://api.olamaps.io/routing/v1/directions?origin=${marker.latitude},${marker.longitude}&destination=${userLatitude},${userLongitude}&mode=driving&alternatives=false&steps=true&overview=full&language=en&traffic_metadata=false&api_key=K84bCHQIvIbx5bvSwEZAQJKXQFOxhWVHw9oniBHq`,
+        { method: "POST" }
+      );
+      const dataToUser = await responseToUser.json();
+      const timeToUser = dataToUser.routes[0]?.legs[0].duration; // Time in seconds
 
-      // const responseToDestination = await fetch(
-      //   `https://maps.googleapis.com/maps/api/directions/json?origin=${userLatitude},${userLongitude}&destination=${destinationLatitude},${destinationLongitude}&key=${directionsAPI}`
-      // );
-      // const dataToDestination = await responseToDestination.json();
-      // const timeToDestination =
-      //   dataToDestination.routes[0]?.legs[0].duration.value; // Time in seconds
+      const responseToDestination = await fetch(
+        `https://api.olamaps.io/routing/v1/directions?origin=${userLatitude},${userLongitude}&destination=${destinationLatitude},${destinationLongitude}&mode=driving&alternatives=false&steps=true&overview=full&language=en&traffic_metadata=false&api_key=K84bCHQIvIbx5bvSwEZAQJKXQFOxhWVHw9oniBHq`,
+        { method: "POST" }
+      );
+      const dataToDestination = await responseToDestination.json();
+      const timeToDestination = dataToDestination.routes[0]?.legs[0].duration; // Time in seconds
 
-      // const totalTime = (timeToUser + timeToDestination) / 60; // Total time in minutes
-      // const price = (totalTime * 0.5).toFixed(2); // Calculate price based on time
+      const totalTime = (timeToUser + timeToDestination) / 60; // Total time in minutes
+      const price = (totalTime * 0.5).toFixed(2); // Calculate price based on time
 
-      return { ...marker, time: 20, price: 40 };
+      return { ...marker, time: totalTime.toFixed(0), price: price };
     });
 
     return await Promise.all(timesPromises);

@@ -1,4 +1,11 @@
-import { View, Text, FlatList, Image, TouchableOpacity, Alert } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import React, { useState } from "react";
 import RideLayout from "@/components/RideLayout";
 import { icons } from "@/constants";
@@ -51,7 +58,9 @@ const ConfirmRide = () => {
                   </View>
                   <View className="w-[1px] h-[100%] bg-black mx-2" />
                   <View className="flex-row items-center">
-                    <Text className="text-[11px] font-medium">{item.time}</Text>
+                    <Text className="text-[11px] font-medium">
+                      {item.time} Mins
+                    </Text>
                   </View>
                   <View className="w-[1px] h-[100%] bg-black mx-2" />
                   <View className="flex-row items-center">
@@ -74,10 +83,9 @@ const ConfirmRide = () => {
               text="Select Ride"
               classNames="bg-primary-500 my-3 rounded-full py-[16px] px-[18px] mx-5"
               onPress={() => {
-                if(selectedDriver==null){
-                  Alert.alert('Info','Please select driver')
-                }
-                else{
+                if (selectedDriver == null) {
+                  Alert.alert("Info", "Please select driver");
+                } else {
                   router.push("/(root)/book-ride");
                 }
               }}

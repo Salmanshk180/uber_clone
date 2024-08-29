@@ -73,6 +73,7 @@ const Home = () => {
     router.push("/(root)/find-rides");
   };
 
+  
   return (
     <SafeAreaView className="bg-general-500">
       <FlatList

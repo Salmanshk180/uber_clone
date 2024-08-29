@@ -53,7 +53,7 @@ const Map = () => {
         userLongitude,
         destinationLatitude,
         destinationLongitude,
-      }).then((drivers:any) => {
+      }).then((drivers: any) => {
         setDrivers(drivers as MarkerData[]);
       });
     }
@@ -125,7 +125,7 @@ const Map = () => {
               latitude: destinationLatitude,
               longitude: destinationLongitude,
             }}
-            apikey={directionsAPI!}
+            apikey={`K84bCHQIvIbx5bvSwEZAQJKXQFOxhWVHw9oniBHq`}
             strokeColor="#0286FF"
             strokeWidth={2}
           />
