@@ -49,6 +49,7 @@ export default function RootLayout() {
           <Stack.Screen name="(root)/(tabs)/home" />
           <Stack.Screen name="(root)/find-rides" />
           <Stack.Screen name="(root)/confirm-ride" />
+          <Stack.Screen name="(root)/book-ride" />
           <Stack.Screen name="+not-found" />
         </Stack>
       </ClerkLoaded>
