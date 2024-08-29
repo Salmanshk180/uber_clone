@@ -8,7 +8,7 @@ import { ReactNativeModal } from "react-native-modal";
 import CustomButton from "@/components/CustomButton";
 import { images } from "@/constants";
 import { fetchAPI } from "@/lib/fetch";
-import { useLocationStore } from "@/store";
+import { useDriverStore, useLocationStore } from "@/store";
 import { PaymentProps } from "@/types/types";
 
 const Payment = ({
@@ -26,11 +26,11 @@ const Payment = ({
     destinationLatitude,
     destinationAddress,
     destinationLongitude,
+    resetLocation,
   } = useLocationStore();
-
+  const { clearSelectedDriver } = useDriverStore();
   const { userId } = useAuth();
   const [success, setSuccess] = useState<boolean>(false);
-
   const openPaymentSheet = async () => {
     await initializePaymentSheet();
 
@@ -121,15 +121,12 @@ const Payment = ({
   return (
     <>
       <CustomButton
-        text="Confirm Ride"
+        text={"Confirm Ride"}
         classNames="my-10 bg-primary-500 rounded-full px-[16px] py-[18px]"
         onPress={openPaymentSheet}
       />
 
-      <ReactNativeModal
-        isVisible={success}
-        onBackdropPress={() => setSuccess(false)}
-      >
+      <ReactNativeModal isVisible={success}>
         <View className="flex flex-col items-center justify-center bg-white p-7 rounded-2xl">
           <Image source={images.check} className="w-28 h-28 mt-5" />
 
@@ -146,9 +143,11 @@ const Payment = ({
             text="Back Home"
             onPress={() => {
               setSuccess(false);
+              resetLocation();
+              clearSelectedDriver();
               router.push("/(root)/(tabs)/home");
             }}
-            classNames="mt-5"
+            classNames="mt-5 bg-primary-500 w-full rounded-full px-[16px] py-[18px]"
           />
         </View>
       </ReactNativeModal>

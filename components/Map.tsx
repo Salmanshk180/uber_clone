@@ -53,7 +53,7 @@ const Map = () => {
         userLongitude,
         destinationLatitude,
         destinationLongitude,
-      }).then((drivers) => {
+      }).then((drivers:any) => {
         setDrivers(drivers as MarkerData[]);
       });
     }
@@ -68,7 +68,7 @@ const Map = () => {
 
   if (loading || (!userLatitude && !userLongitude))
     return (
-      <View className="flex justify-between items-center w-full">
+      <View className="flex-1 justify-center items-center">
         <ActivityIndicator size="small" color="#000" />
       </View>
     );

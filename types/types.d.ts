@@ -17,7 +17,7 @@ declare interface MarkerData {
   title: string;
   profile_image_url: string;
   car_image_url: string;
-  car_seats: number;  
+  car_seats: number;
   rating: number;
   first_name: string;
   last_name: string;
@@ -122,6 +122,7 @@ declare interface LocationStore {
     longitude: number;
     address: string;
   }) => void;
+  resetLocation: () => void;
 }
 
 declare interface DriverStore {

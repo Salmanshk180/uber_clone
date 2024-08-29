@@ -17,8 +17,8 @@ const FindRide = () => {
   } = useLocationStore();
   return (
     <SafeAreaView className="flex-1">
-      <RideLayout>
-        <View className="px-[20px]">
+      <RideLayout snapPoints={["40%", "85%"]}>
+        <View className="px-[20px] flex-1">
           <View className="mb-3">
             <Text className="text-xl mb-1">From</Text>
             <GoogleTextInput
