@@ -1,8 +1,12 @@
 import { View, Image } from "react-native";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import {
+  GooglePlacesAutocomplete,
+  GooglePlacesAutocompleteRef,
+} from "react-native-google-places-autocomplete";
 
 import { icons } from "@/constants";
 import { GoogleInputProps } from "@/types/types";
+import { LegacyRef, RefObject, useRef } from "react";
 
 const googlePlacesApiKey = process.env.EXPO_PUBLIC_GOOGLE_API_KEY;
 
@@ -13,6 +17,7 @@ const GoogleTextInput = ({
   textInputBackgroundColor,
   handlePress,
 }: GoogleInputProps) => {
+  const textRef = useRef<GooglePlacesAutocompleteRef>(null);
   return (
     <View
       className={`flex flex-row items-center justify-center relative z-50 rounded-xl ${containerStyle}`}
@@ -20,6 +25,7 @@ const GoogleTextInput = ({
       <GooglePlacesAutocomplete
         fetchDetails={true}
         placeholder="Search"
+        ref={textRef}
         debounce={200}
         styles={{
           textInputContainer: {
@@ -58,6 +64,7 @@ const GoogleTextInput = ({
             longitude: details?.geometry.location.lng!,
             address: data.description,
           });
+          textRef.current?.setAddressText("");
         }}
         query={{
           key: googlePlacesApiKey,

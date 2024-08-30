@@ -18,18 +18,21 @@ import Map from "@/components/Map";
 import RideCard from "@/components/RideCard";
 import { icons, images } from "@/constants";
 import { useFetch } from "@/lib/fetch";
-import { useLocationStore } from "@/store";
+import { useDriverStore, useLocationStore } from "@/store";
 import { Ride } from "@/types/types";
 
 const Home = () => {
   const { user } = useUser();
   const { signOut } = useAuth();
-  const [rides, setRides] = useState();
-  const { setUserLocation, setDestinationLocation } = useLocationStore();
+  const { setUserLocation, setDestinationLocation, resetLocation } =
+    useLocationStore();
+  const { clearSelectedDriver } = useDriverStore();
 
   const handleSignOut = () => {
     signOut();
     router.replace("/(auth)/sign-in");
+    resetLocation();
+    clearSelectedDriver();
   };
 
   const [hasPermission, setHasPermission] = useState<boolean>(false);
@@ -69,11 +72,9 @@ const Home = () => {
     address: string;
   }) => {
     setDestinationLocation(location);
-
     router.push("/(root)/find-rides");
   };
 
-  
   return (
     <SafeAreaView className="bg-general-500">
       <FlatList

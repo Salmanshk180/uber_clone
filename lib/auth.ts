@@ -1,6 +1,10 @@
 import * as SecureStore from "expo-secure-store";
-import Linking from "expo-linking";
+import * as Linking from "expo-linking";
 import { fetchAPI } from "./fetch";
+import {
+  StartOAuthFlowParams,
+  StartOAuthFlowReturnType,
+} from "@clerk/clerk-expo";
 export const tokenCache = {
   async getToken(key: string) {
     try {
@@ -26,15 +30,22 @@ export const tokenCache = {
   },
 };
 
-export const googleOAuth = async (startOAuthFlow: any) => {
+export const googleOAuth = async (
+  startOAuthFlow: (
+    startOAuthFlowParams?: StartOAuthFlowParams
+  ) => Promise<StartOAuthFlowReturnType>
+) => {
   try {
-    const { createdSessionId, setActive, signUp } = await startOAuthFlow();
-
+    const redirectUrl = Linking.createURL("/(root)/(tabs)/home", {
+      scheme: "myapp",
+    });
+    const { createdSessionId, setActive, signUp } = await startOAuthFlow({
+      redirectUrl,
+    });
     if (createdSessionId) {
       if (setActive) {
         await setActive({ session: createdSessionId });
-
-        if (signUp.createdUserId) {
+        if (signUp?.createdUserId) {
           await fetch("/user", {
             method: "POST",
             body: JSON.stringify({

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Text, View } from "react-native";
-import MapView, { Marker, PROVIDER_DEFAULT } from "react-native-maps";
+import MapView, { Circle, Marker, PROVIDER_DEFAULT } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 
 import { icons } from "@/constants";
@@ -91,6 +91,12 @@ const Map = () => {
       showsUserLocation={true}
       userInterfaceStyle="light"
     >
+      <Circle
+        center={{ latitude: userLatitude!, longitude: userLongitude! }}
+        radius={250}
+        fillColor="rgba(0, 150, 255,0.1)"
+        strokeColor="#0096FF"
+      ></Circle>
       {markers.map((marker, index) => (
         <Marker
           key={marker.id}
@@ -125,9 +131,9 @@ const Map = () => {
               latitude: destinationLatitude,
               longitude: destinationLongitude,
             }}
-            apikey={`K84bCHQIvIbx5bvSwEZAQJKXQFOxhWVHw9oniBHq`}
+            apikey={directionsAPI!}
             strokeColor="#0286FF"
-            strokeWidth={2}
+            strokeWidth={3}
           />
         </>
       )}

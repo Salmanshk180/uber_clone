@@ -14,10 +14,16 @@ const FindRide = () => {
     destinationAddress,
     setDestinationLocation,
     setUserLocation,
+    resetLocation,
   } = useLocationStore();
   return (
     <SafeAreaView className="flex-1">
-      <RideLayout snapPoints={["40%", "85%"]}>
+      <RideLayout
+        snapPoints={["40%", "85%"]}
+        onBack={() => {
+          resetLocation();
+        }}
+      >
         <View className="px-[20px] flex-1">
           <View className="mb-3">
             <Text className="text-xl mb-1">From</Text>

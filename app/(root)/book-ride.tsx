@@ -8,30 +8,31 @@ import { icons } from "@/constants";
 import { formatTime } from "@/lib/utils";
 import { useDriverStore, useLocationStore } from "@/store";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useRef, useState } from "react";
 
 const BookRide = () => {
   const { user } = useUser();
   const { userAddress, destinationAddress } = useLocationStore();
   const { drivers, selectedDriver } = useDriverStore();
-
+  const ref = useRef<any>();
   const driverDetails = drivers?.filter(
     (driver) => +driver.id === selectedDriver
   )[0];
 
   return (
     <SafeAreaView className="flex-1">
-    <StripeProvider
-      publishableKey={process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY!}
-      merchantIdentifier="merchant.com.uber"
-      urlScheme="myapp"
-    >
-        <RideLayout snapPoints={["86%","86%"]}>
+      <StripeProvider
+        publishableKey={process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY!}
+        merchantIdentifier="merchant.com.uber"
+        urlScheme="myapp"
+      >
+        <RideLayout snapPoints={["85%", "40%"]} ref={ref}>
           <>
             <View className="px-3 border-b border-[#EBEBEB] flex-row items-baseline justify-between">
               <Text className="text-xl font-JakartaSemiBold mb-3">
                 Ride Information
               </Text>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => ref?.current?.close()}>
                 <Image source={icons.close} className="w-[24px] h-[24px]" />
               </TouchableOpacity>
             </View>
@@ -66,7 +67,7 @@ const BookRide = () => {
                     Ride Price
                   </Text>
                   <Text className="text-lg font-JakartaRegular text-[#0CC25F]">
-                    ${driverDetails?.price}
+                    &#x20B9; {driverDetails?.price}
                   </Text>
                 </View>
 
@@ -75,7 +76,7 @@ const BookRide = () => {
                     Pickup Time
                   </Text>
                   <Text className="text-lg font-JakartaRegular">
-                    {formatTime(driverDetails?.time!)}
+                    {formatTime(+driverDetails?.time!.toFixed(0))}
                   </Text>
                 </View>
 
@@ -88,21 +89,26 @@ const BookRide = () => {
               </View>
 
               <View className="flex flex-col w-full items-start justify-center mt-5">
-                <View className="flex flex-row items-center justify-start mt-3 border-t border-b border-general-700 w-full py-3">
-                  <Image source={icons.to} className="w-6 h-6" />
-                  <Text className="text-lg font-JakartaRegular ml-2">
+                <View className="flex  flex-row items-center justify-start mt-3 border-t border-b border-general-700 w-full py-3">
+                  <Image source={icons.to} className="w-6 h-6 " />
+                  <Text
+                    className="text-lg font-JakartaRegular flex-1 ml-2 w-full"
+                    numberOfLines={2}
+                  >
                     {userAddress}
                   </Text>
                 </View>
 
                 <View className="flex flex-row items-center justify-start border-b border-general-700 w-full py-3">
                   <Image source={icons.point} className="w-6 h-6" />
-                  <Text className="text-lg font-JakartaRegular ml-2">
+                  <Text
+                    className="text-lg font-JakartaRegular flex-1 ml-2"
+                    numberOfLines={2}
+                  >
                     {destinationAddress}
                   </Text>
                 </View>
               </View>
-
               <Payment
                 fullName={user?.fullName!}
                 email={user?.emailAddresses[0].emailAddress!}
@@ -113,8 +119,8 @@ const BookRide = () => {
             </View>
           </>
         </RideLayout>
-    </StripeProvider>
-      </SafeAreaView>
+      </StripeProvider>
+    </SafeAreaView>
   );
 };
 

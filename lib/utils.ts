@@ -6,7 +6,7 @@ export function formatTime(minutes: number): string {
   } else {
     const hours = Math.floor(formattedMinutes / 60);
     const remainingMinutes = formattedMinutes % 60;
-    return `${hours}h ${remainingMinutes}m`;
+    return `${hours}h ${remainingMinutes.toFixed(0)}m`;
   }
 }
 

@@ -10,6 +10,12 @@ import { images } from "@/constants";
 import { fetchAPI } from "@/lib/fetch";
 import { useDriverStore, useLocationStore } from "@/store";
 import { PaymentProps } from "@/types/types";
+import {
+  FontConfig,
+  GlobalColorConfig,
+  PrimaryButtonConfig,
+  ShadowConfig,
+} from "@stripe/stripe-react-native/lib/typescript/src/types/PaymentSheet";
 
 const Payment = ({
   fullName,
@@ -35,7 +41,7 @@ const Payment = ({
     await initializePaymentSheet();
 
     const { error } = await presentPaymentSheet();
-
+    console.log("paymentsheet error", JSON.stringify(error, null, 2));
     if (error) {
       Alert.alert(`Error code: ${error.code}`, error.message);
     } else {
@@ -46,10 +52,15 @@ const Payment = ({
   const initializePaymentSheet = async () => {
     const { error } = await initPaymentSheet({
       merchantDisplayName: "Example, Inc.",
+      defaultBillingDetails: {
+        address: {
+          country: "IN",
+        },
+      },
       intentConfiguration: {
         mode: {
           amount: parseInt(amount) * 100,
-          currencyCode: "usd",
+          currencyCode: "inr",
         },
         confirmHandler: async (
           paymentMethod,
@@ -116,13 +127,14 @@ const Payment = ({
       },
       returnURL: "myapp://book-ride",
     });
+    // console.log('err==>',JSON.stringify(error?.response,null,2))
   };
 
   return (
     <>
       <CustomButton
         text={"Confirm Ride"}
-        classNames="my-10 bg-primary-500 rounded-full px-[16px] py-[18px]"
+        classNames="my-5 bg-primary-500 rounded-full px-[16px] py-[18px]"
         onPress={openPaymentSheet}
       />
 

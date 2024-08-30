@@ -11,7 +11,7 @@ const Rides = () => {
   const { user } = useUser();
   const { data, loading } = useFetch<Ride[]>(`/(api)/ride/${user?.id}`);
   return (
-    <SafeAreaView className="flex-1">
+    <SafeAreaView className="flex-1 border">
       <FlatList
         data={data}
         renderItem={({ item }) => <RideCard ride={item} />}
@@ -20,9 +20,10 @@ const Rides = () => {
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
           paddingBottom: 100,
+          flex: 1,
         }}
         ListEmptyComponent={() => (
-          <View className="flex items-center justify-center">
+          <View className="flex-1 items-center justify-center">
             {!loading ? (
               <>
                 <Image

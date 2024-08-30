@@ -58,8 +58,8 @@ export const calculateRegion = ({
   const minLng = Math.min(userLongitude, destinationLongitude);
   const maxLng = Math.max(userLongitude, destinationLongitude);
 
-  const latitudeDelta = (maxLat - minLat) * 1.3; // Adding some padding
-  const longitudeDelta = (maxLng - minLng) * 1.3; // Adding some padding
+  const latitudeDelta = (maxLat - minLat) * 1.3;
+  const longitudeDelta = (maxLng - minLng) * 1.3;
 
   const latitude = (userLatitude + destinationLatitude) / 2;
   const longitude = (userLongitude + destinationLongitude) / 2;
@@ -96,23 +96,23 @@ export const calculateDriverTimes = async ({
   try {
     const timesPromises = markers.map(async (marker) => {
       const responseToUser = await fetch(
-        `https://api.olamaps.io/routing/v1/directions?origin=${marker.latitude},${marker.longitude}&destination=${userLatitude},${userLongitude}&mode=driving&alternatives=false&steps=true&overview=full&language=en&traffic_metadata=false&api_key=K84bCHQIvIbx5bvSwEZAQJKXQFOxhWVHw9oniBHq`,
-        { method: "POST" }
+        `https://maps.googleapis.com/maps/api/directions/json?origin=${marker.latitude},${marker.longitude}&destination=${userLatitude},${userLongitude}&key=${directionsAPI}`
       );
       const dataToUser = await responseToUser.json();
-      const timeToUser = dataToUser.routes[0]?.legs[0].duration; // Time in seconds
+      const timeToUser = dataToUser?.routes[0]?.legs[0].duration.value; // Time in seconds
 
       const responseToDestination = await fetch(
-        `https://api.olamaps.io/routing/v1/directions?origin=${userLatitude},${userLongitude}&destination=${destinationLatitude},${destinationLongitude}&mode=driving&alternatives=false&steps=true&overview=full&language=en&traffic_metadata=false&api_key=K84bCHQIvIbx5bvSwEZAQJKXQFOxhWVHw9oniBHq`,
-        { method: "POST" }
+        `https://maps.googleapis.com/maps/api/directions/json?origin=${userLatitude},${userLongitude}&destination=${destinationLatitude},${destinationLongitude}&key=${directionsAPI}`
       );
       const dataToDestination = await responseToDestination.json();
-      const timeToDestination = dataToDestination.routes[0]?.legs[0].duration; // Time in seconds
+      const timeToDestination =
+        dataToDestination?.routes[0]?.legs[0].duration.value; // Time in seconds
 
       const totalTime = (timeToUser + timeToDestination) / 60; // Total time in minutes
-      const price = (totalTime * 0.5).toFixed(2); // Calculate price based on time
+      const pricePerMinute = (0.5 * 83) / 10; // Adjusting for Indian currency (example rate)
+      const price = (totalTime * pricePerMinute).toFixed(2); // Calculate price based on time in INR
 
-      return { ...marker, time: totalTime.toFixed(0), price: price };
+      return { ...marker, time: totalTime, price };
     });
 
     return await Promise.all(timesPromises);

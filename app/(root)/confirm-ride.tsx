@@ -13,6 +13,7 @@ import CustomButton from "@/components/CustomButton";
 import { useDriverStore } from "@/store";
 import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { formatTime } from "@/lib/utils";
 
 const ConfirmRide = () => {
   const { selectedDriver, setSelectedDriver, drivers } = useDriverStore();
@@ -48,18 +49,18 @@ const ConfirmRide = () => {
                 </View>
                 <View className="mt-[5px] flex-row">
                   <View className="flex-row items-center">
-                    <Image
+                    {/* <Image
                       source={icons.dollar}
                       className="w-[14px] h-[14px] mr-1"
-                    />
+                    /> */}
                     <Text className="text-[11px] font-medium">
-                      ${item?.price}
+                      &#x20B9; {item?.price}
                     </Text>
                   </View>
                   <View className="w-[1px] h-[100%] bg-black mx-2" />
                   <View className="flex-row items-center">
                     <Text className="text-[11px] font-medium">
-                      {item.time} Mins
+                      {formatTime(+item.time!.toFixed(2))}
                     </Text>
                   </View>
                   <View className="w-[1px] h-[100%] bg-black mx-2" />
