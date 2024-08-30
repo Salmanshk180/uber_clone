@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo";
 import "react-native-reanimated";
 import { tokenCache } from "@/lib/auth";
+import { LogBox } from "react-native";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -23,7 +24,7 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     }
   }, [loaded]);
-
+  LogBox.ignoreAllLogs()
   if (!loaded) {
     return null;
   }
